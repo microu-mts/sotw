@@ -1,11 +1,11 @@
-import { buildItemData, ItemDef } from "./items";
-import { Component, createMemo, For } from "solid-js";
+import { buildItemData, ItemData, ItemDef, ItemDefData } from "./items";
+import { Component, createMemo, For, JSX } from "solid-js";
 
 import { twMerge } from "tailwind-merge";
 
 type TProps = {
   items: ItemDef[];
-  callback?: (id: string) => void;
+  callback?: (id: string, item:ItemData) => void;
   class?: string | { ul?: string; li?: string; selected?: string };
   selection?: string;
 };
@@ -13,12 +13,12 @@ type TProps = {
 const baseClasses = {
   ul: "bg-stone-200 p-2 flex flex-row flex-wrap gap-2",
 
-  li: "select-none cursor-pointer bg-amber-900 text-white/90 px-1 rounded-md",
+  li: "select-none cursor-pointer bg-cyan-700 text-white/90 px-1 rounded-md",
 
   selected: "ring-[3px] ring-offset-1 ring-red-600",
 };
 
-export const ButtonBar: Component<TProps> = (props) => {
+export function ButtonBar(props: TProps): JSX.Element {
   const normalizedItems: () => { id: string; label: string }[] = () => {
     const r = [];
 
@@ -28,9 +28,9 @@ export const ButtonBar: Component<TProps> = (props) => {
     return r;
   };
 
-  const callCallback = (id: string) => {
+  const callCallback = (item:ItemData) => {
     if (props.callback) {
-      props.callback(id);
+      props.callback(item.id, item);
     }
   };
 
@@ -80,7 +80,7 @@ export const ButtonBar: Component<TProps> = (props) => {
         {(item) => {
           return (
             <li
-              onClick={() => callCallback(item.id)}
+              onClick={() => callCallback(item)}
               class={
                 item.id == props.selection ? liSelectedClasses() : liClasses()
               }
@@ -92,4 +92,4 @@ export const ButtonBar: Component<TProps> = (props) => {
       </For>
     </ul>
   );
-};
+}

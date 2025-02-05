@@ -1,12 +1,16 @@
 export interface ItemData {
   id: string;
   label: string;
+  [x: string | symbol]: unknown;
 }
 
-export type ItemDef =
-  | { id: string; label?: string }
-  | [string, string]
-  | string;
+export type ItemDefData = {
+  id: string;
+  label?: string;
+  [x: string | symbol]: unknown;
+};
+
+export type ItemDef = ItemDefData | [string, string] | string;
 
 export function buildItemData(def: ItemDef): ItemData {
   if (typeof def == "string") {
@@ -14,6 +18,10 @@ export function buildItemData(def: ItemDef): ItemData {
   } else if (Array.isArray(def)) {
     return { id: def[0], label: def[1] };
   } else {
-    return { id: def.id, label: def.label ?? def.id };
+    const r = Object.assign({}, def);
+    if (r.label == undefined) {
+      r["label"] = r.id;
+    }
+    return r as ItemData;
   }
 }
