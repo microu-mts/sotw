@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.0",
+    "esbuild": "^0.25.0",
     "rollup": "^4.34.0",
     "rollup-preset-solid": "^2.0.1",
     "tsx": "^4.19.2",
