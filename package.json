@@ -1,6 +1,6 @@
 {
   "name": "@microu-mts/sotw",
-  "version": "0.1.6-0",
+  "version": "0.1.6",
   "description": "Project microu-mts: SolidJS + tailwindcss ui components",
   "type": "module",
   "main": "dist/cjs/index.js",
