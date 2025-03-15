@@ -1,12 +1,13 @@
 import { fchmodSync } from "fs";
 import { MStyler } from "./types";
 import { ensureSplittedString } from "./utils";
+import { twMerge } from "tailwind-merge";
 
 export type PVStylerRule = {
   part?: string | string[];
   variant?: string | string[];
   matcher?: (apart: AnalyzedParts) => boolean;
-  classes: string[];
+  classes: string | string[];
   lastRule?: boolean;
 };
 
@@ -56,7 +57,7 @@ export class PVStyler implements MStyler {
     const part = compileStringArray(rule.part);
     const variant = compileStringArray(rule.variant);
     const matcher = rule.matcher;
-    const classes = [...rule.classes];
+    const classes = [...compileStringArray(rule.classes)!];
     const lastRule = !!rule.lastRule;
 
     return { part, variant, matcher, classes, lastRule };
@@ -65,7 +66,18 @@ export class PVStyler implements MStyler {
   classes(parts: string | string[]): string[] {
     const aparts = this.analyzeParts(ensureSplittedString(parts));
 
-    return [];
+    const r = [] as string[];
+
+    for (const rule of this.rules) {
+      if (this.ruleMatches(rule, aparts)) {
+        r.push(...rule.classes);
+        if (rule.lastRule) {
+          break;
+        }
+      }
+    }
+
+    return ensureSplittedString(twMerge(r));
   }
 
   analyzeParts(rawParts: string[]): AnalyzedParts {

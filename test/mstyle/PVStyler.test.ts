@@ -59,3 +59,32 @@ suite("PVStyler.ruleMatches", () => {
     );
   });
 });
+
+suite("PPVStyler.classes", () => {
+  test("Empty rule set", () => {
+    const styler = new PVStyler([]);
+
+    assert.deepEqual(styler.classes(""), []);
+    assert.deepEqual(styler.classes("button"), []);
+    assert.deepEqual(styler.classes("button !A"), []);
+    assert.deepEqual(styler.classes("button nav !A !B"), []);
+  });
+
+  test("Minimal rule set", () => {
+    const styler = new PVStyler([
+      { part: "button", classes: "bg-zinc-200 text-black" },
+    ]);
+
+    assert.deepEqual(styler.classes(""), []);
+    assert.deepEqual(styler.classes("button"), ["bg-zinc-200", "text-black"]);
+    assert.deepEqual(styler.classes("button !A"), [
+      "bg-zinc-200",
+      "text-black",
+    ]);
+    assert.deepEqual(styler.classes("button nav !A !B"), [
+      "bg-zinc-200",
+      "text-black",
+    ]);
+    assert.deepEqual(styler.classes("checkbox nav !A !B"), []);
+  });
+});
