@@ -5,8 +5,8 @@ import { STagsStyler } from "../../src/mstyle";
 suite("STagStyler.ruleMatches", () => {
   const pvs = new STagsStyler([]);
 
-  test("parts rule", () => {
-    assert(
+    test("parts rule", () => {
+      assert(
       pvs.ruleMatches(
         { part: ["button"], lastRule: false, classes: [] },
         { parts: ["button"] }

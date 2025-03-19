@@ -1,4 +1,4 @@
-import { buildItemData, ItemData, ItemDef, ItemDefData } from "./items";
+import { buildItemData, ItemData, ItemDef, ItemDefData } from "./itemData";
 import { Component, createMemo, For, JSX } from "solid-js";
 
 import { twMerge } from "tailwind-merge";
