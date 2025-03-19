@@ -64,6 +64,7 @@ export class STagsStyler implements MStyler {
 
   classes(parts: string | string[]): string[] | undefined {
     const aparts = this.analyzeParts(ensureSplittedString(parts));
+    console.log("APART:", parts, aparts)
 
     const r: string[] = [];
     let matchCount = 0;

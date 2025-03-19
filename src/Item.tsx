@@ -2,17 +2,24 @@ import { Component } from "solid-js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { MStyle } from "./mstyle/mstyle.js";
 import { twMerge } from "tailwind-merge";
+import { ensureSplittedString } from "./mstyle/utils.js";
 
 type TProps = {
   def: ItemDef;
   onClick?: (item: ItemData) => void;
+  stag?: string | string[];
 };
 
 export const Item: Component<TProps> = (props) => {
   const itemData = () => buildItemData(props.def);
 
   const classes = () => {
-    const mstyleClasses = MStyle.base ? MStyle.base.classes("item") : undefined;
+    const tags = props.stag
+      ? [...ensureSplittedString(props.stag), "item"]
+      : ["item"];
+
+    const mstyleClasses = MStyle.base ? MStyle.base.classes(tags) : undefined;
+    console.log("mstyleClasses:", itemData().id, mstyleClasses);
 
     if (props.onClick) {
       return twMerge(mstyleClasses, "select-none cursor-pointer");
