@@ -3,23 +3,23 @@ import { MStyler } from "./types";
 import { ensureSplittedString } from "./utils";
 
 export type STagsStylerRule = {
-  part?: string | string[];
+  tags?: string | string[];
   variant?: string | string[];
-  matcher?: (apart: AnalyzedParts) => boolean;
+  matcher?: (apart: AnalyzedTags) => boolean;
   classes: string | string[];
   lastRule?: boolean;
 };
 
 type STagsStylerRuleCompiled = {
-  part?: string[];
+  tags?: string[];
   variant?: string[];
-  matcher?: (apart: AnalyzedParts) => boolean;
+  matcher?: (apart: AnalyzedTags) => boolean;
   classes: string[];
   lastRule: boolean;
 };
 
-type AnalyzedParts = {
-  parts: string[];
+type AnalyzedTags = {
+  tags: string[];
   variant?: string;
 };
 
@@ -53,22 +53,23 @@ export class STagsStyler implements MStyler {
   }
 
   compileRule(rule: STagsStylerRule): STagsStylerRuleCompiled {
-    const part = compileStringArray(rule.part);
+    const tags = compileStringArray(rule.tags);
     const variant = compileStringArray(rule.variant);
     const matcher = rule.matcher;
     const classes = [...compileStringArray(rule.classes)!];
     const lastRule = !!rule.lastRule;
 
-    return { part, variant, matcher, classes, lastRule };
+    return { tags: tags, variant, matcher, classes, lastRule };
   }
 
-  classes(parts: string | string[]): string[] {
+  classes(parts: string | string[]): string[] | undefined {
     const aparts = this.analyzeParts(ensureSplittedString(parts));
 
-    const r = [] as string[];
-
+    const r: string[] = [];
+    let matchCount = 0;
     for (const rule of this.rules) {
       if (this.ruleMatches(rule, aparts)) {
+        matchCount += 1;
         r.push(...rule.classes);
         if (rule.lastRule) {
           break;
@@ -76,10 +77,10 @@ export class STagsStyler implements MStyler {
       }
     }
 
-    return ensureSplittedString(twMerge(r));
+    return matchCount == 0 ? undefined : ensureSplittedString(twMerge(r));
   }
 
-  analyzeParts(rawParts: string[]): AnalyzedParts {
+  analyzeParts(rawParts: string[]): AnalyzedTags {
     let variant = undefined;
     const parts = [] as string[];
     for (const p of rawParts) {
@@ -89,14 +90,14 @@ export class STagsStyler implements MStyler {
         parts.push(p);
       }
     }
-    return { parts, variant };
+    return { tags: parts, variant };
   }
 
-  ruleMatches(rule: STagsStylerRuleCompiled, apart: AnalyzedParts): boolean {
-    if (rule.part != undefined) {
+  ruleMatches(rule: STagsStylerRuleCompiled, apart: AnalyzedTags): boolean {
+    if (rule.tags != undefined) {
       let found = false;
-      for (const p of apart.parts) {
-        const i = rule.part.indexOf(p);
+      for (const p of apart.tags) {
+        const i = rule.tags.indexOf(p);
         if (i >= 0) {
           found = true;
         }

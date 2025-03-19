@@ -2,32 +2,32 @@ import { suite, test } from "node:test";
 import assert from "node:assert/strict";
 import { STagsStyler } from "../../src/mstyle";
 
-suite("STagStyler.ruleMatches", () => {
+suite("STagsStyler.ruleMatches", () => {
   const pvs = new STagsStyler([]);
 
-    test("parts rule", () => {
-      assert(
+  test("parts rule", () => {
+    assert(
       pvs.ruleMatches(
-        { part: ["button"], lastRule: false, classes: [] },
-        { parts: ["button"] }
+        { tags: ["button"], lastRule: false, classes: [] },
+        { tags: ["button"] }
       )
     );
     assert(
       pvs.ruleMatches(
-        { part: ["element", "button"], lastRule: false, classes: [] },
-        { parts: ["button"] }
+        { tags: ["element", "button"], lastRule: false, classes: [] },
+        { tags: ["button"] }
       )
     );
     assert(
       pvs.ruleMatches(
-        { part: ["button"], lastRule: false, classes: [] },
-        { parts: ["element", "button"] }
+        { tags: ["button"], lastRule: false, classes: [] },
+        { tags: ["element", "button"] }
       )
     );
     assert(
       !pvs.ruleMatches(
-        { part: ["checkbox"], lastRule: false, classes: [] },
-        { parts: ["element", "button"] }
+        { tags: ["checkbox"], lastRule: false, classes: [] },
+        { tags: ["element", "button"] }
       )
     );
   });
@@ -36,25 +36,25 @@ suite("STagStyler.ruleMatches", () => {
     assert(
       pvs.ruleMatches(
         { variant: ["alpha", "beta"], lastRule: false, classes: [] },
-        { parts: [], variant: "beta" }
+        { tags: [], variant: "beta" }
       )
     );
     assert(
       pvs.ruleMatches(
         { variant: ["alpha", "beta"], lastRule: false, classes: [] },
-        { parts: ["button"], variant: "alpha" }
+        { tags: ["button"], variant: "alpha" }
       )
     );
     assert(
       !pvs.ruleMatches(
         { variant: ["alpha", "beta"], lastRule: false, classes: [] },
-        { parts: ["button"], variant: undefined }
+        { tags: ["button"], variant: undefined }
       )
     );
     assert(
       !pvs.ruleMatches(
         { variant: ["alpha", "beta"], lastRule: false, classes: [] },
-        { parts: ["button"], variant: "gamma" }
+        { tags: ["button"], variant: "gamma" }
       )
     );
   });
@@ -64,18 +64,18 @@ suite("STagStyler.classes", () => {
   test("Empty rule set", () => {
     const styler = new STagsStyler([]);
 
-    assert.deepEqual(styler.classes(""), []);
-    assert.deepEqual(styler.classes("button"), []);
-    assert.deepEqual(styler.classes("button !A"), []);
-    assert.deepEqual(styler.classes("button nav !A !B"), []);
+    assert.deepEqual(styler.classes(""), undefined);
+    assert.deepEqual(styler.classes("button"), undefined);
+    assert.deepEqual(styler.classes("button !A"), undefined);
+    assert.deepEqual(styler.classes("button nav !A !B"), undefined);
   });
 
   test("Minimal rule set", () => {
     const styler = new STagsStyler([
-      { part: "button", classes: "bg-zinc-200 text-black" },
+      { tags: "button", classes: "bg-zinc-200 text-black" },
     ]);
 
-    assert.deepEqual(styler.classes(""), []);
+    assert.deepEqual(styler.classes(""), undefined);
     assert.deepEqual(styler.classes("button"), ["bg-zinc-200", "text-black"]);
     assert.deepEqual(styler.classes("button !A"), [
       "bg-zinc-200",
@@ -85,6 +85,6 @@ suite("STagStyler.classes", () => {
       "bg-zinc-200",
       "text-black",
     ]);
-    assert.deepEqual(styler.classes("checkbox nav !A !B"), []);
+    assert.deepEqual(styler.classes("checkbox nav !A !B"), undefined);
   });
 });

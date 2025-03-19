@@ -1,4 +1,3 @@
 export interface MStyler {
-  classes(parts: string | string[]):string [];
+  classes(parts: string | string[]): string[] | undefined;
 }
-
