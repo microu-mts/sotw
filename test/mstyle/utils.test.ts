@@ -1,6 +1,7 @@
 import { suite, test } from "node:test";
 import assert from "node:assert/strict";
-import { splitCleanString } from "../../src/mstyle/utils.js";
+import { normalizeTagListArgument } from "../../src/mstyle/tagRules.js";
+import { deduplicate, splitCleanString } from "../../src/mstyle/utils.js";
 
 suite("splitCleanString", () => {
   test("default options", () => {
@@ -61,9 +62,26 @@ suite("splitCleanString", () => {
     assert.deepEqual(
       splitCleanString("??:AAA:???:BBB::::CCC:?", {
         separator: /\:+/,
-        filter: (s: string) => !s.match(/^\?+$/)
+        filter: (s: string) => !s.match(/^\?+$/),
       }),
       ["AAA", "BBB", "CCC"]
+    );
+  });
+});
+
+suite("deduplicate", () => {
+  test("deduplicate empty list", () => {
+    assert.deepEqual(deduplicate([]), []);
+  });
+
+  test("deduplicate list without duplicates", () => {
+    assert.deepEqual(deduplicate([1, 2, 3, 4, 5]), [1, 2, 3, 4, 5]);
+  });
+
+  test("deduplicate list with duplicates", () => {
+    assert.deepEqual(
+      deduplicate([1, 1, 1, 11, 2, 22, 1, 2, 3, 11, 4, 3, 2, 1, 22, 5, 11]),
+      [1, 11, 2, 22, 3, 4, 5]
     );
   });
 });

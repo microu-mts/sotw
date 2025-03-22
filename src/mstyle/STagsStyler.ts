@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { MStyler } from "./types";
-import { ensureSplittedString } from "./utils";
+import { normalizeTagListArgument } from "./tagRules";
 
 export type STagsStylerRule = {
   tags?: string | string[];
@@ -63,7 +63,7 @@ export class STagsStyler implements MStyler {
   }
 
   classes(parts: string | string[]): string[] | undefined {
-    const aparts = this.analyzeParts(ensureSplittedString(parts));
+    const aparts = this.analyzeParts(normalizeTagListArgument(parts));
     console.log("APART:", parts, aparts)
 
     const r: string[] = [];
@@ -78,7 +78,7 @@ export class STagsStyler implements MStyler {
       }
     }
 
-    return matchCount == 0 ? undefined : ensureSplittedString(twMerge(r));
+    return matchCount == 0 ? undefined : normalizeTagListArgument(twMerge(r));
   }
 
   analyzeParts(rawParts: string[]): AnalyzedTags {

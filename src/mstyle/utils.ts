@@ -7,17 +7,15 @@ export function splitCleanString(
   const r = s.split(separator).filter(filter);
   return r;
 }
-
-export function ensureSplittedString(arg: string | string[]): string[] {
-  if (typeof arg == "string") {
-    return splitCleanString(arg);
-  } else if (Array.isArray(arg)) {
-    const r = [];
-    for (const s of arg) {
-      r.push(...splitCleanString(s))
+export function deduplicate<T>(items: T[]): T[] {
+  const r = [] as T[];
+  const itemSet = new Set<T>();
+  for (const item of items) {
+    if (!itemSet.has(item)) {
+      r.push(item);
+      itemSet.add(item);
     }
-    return r;
-  } 
-  return  []
+  }
 
+  return r;
 }
