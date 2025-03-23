@@ -3,29 +3,35 @@ import { TagRule, tagRuleMatches, TagRuleMode } from "./tagRules.js";
 import { normalizeTagListArgument, TagListArgument } from "./tagRules.js";
 import { deduplicate } from "./utils.js";
 
-export type SVTBasicRule = {
+export type SVTRule = {
   stagRule: TagRule;
   vtagRule: TagRule;
   classes: string[];
 };
 
-export type SVTBasicRuleDef = {
+export type SVTRuleDef = {
   stagMode?: TagRuleMode;
   vtagMode?: TagRuleMode;
-  stags: TagListArgument;
-  vtags: TagListArgument;
-  classes: TagListArgument;
+  stags?: TagListArgument;
+  vtags?: TagListArgument;
+  classes?: TagListArgument;
 };
 
-type SVTBasicStylerOptions = {
+type SVTStylerOptions = {
   normalizer?: (rawClasses: string[]) => string[];
 };
 
-export class SVTBasicStyler {
-  readonly _rules: SVTBasicRule[] = [];
+export interface ISVTStyler {
+  classes(stags: TagListArgument, vtags: TagListArgument): string[];
+
+}
+
+
+export class SVTStyler implements ISVTStyler{
+  readonly _rules: SVTRule[] = [];
   readonly options: { normalizer?: (rawClasses: string[]) => string[] };
 
-  constructor(rules: SVTBasicRuleDef[], options: SVTBasicStylerOptions = {}) {
+  constructor(rules: SVTRuleDef[], options: SVTStylerOptions = {}) {
     for (const r of rules) {
       this._rules.push(this.normalizeRule(r));
     }
@@ -46,7 +52,7 @@ export class SVTBasicStyler {
     return this.options.normalizer ? this.options.normalizer(r) : r;
   }
 
-  normalizeRule(rule: SVTBasicRuleDef): SVTBasicRule {
+  normalizeRule(rule: SVTRuleDef): SVTRule {
     let stagMode: TagRuleMode = rule.stagMode ?? "or";
     let vtagMode: TagRuleMode = rule.vtagMode ?? "or";
     let stags: string[] = deduplicate(normalizeTagListArgument(rule.stags));
@@ -67,7 +73,7 @@ export class SVTBasicStyler {
     };
   }
 
-  ruleMatches(rule: SVTBasicRule, stags: string[], vtags: string[]) {
+  ruleMatches(rule: SVTRule, stags: string[], vtags: string[]) {
     return (
       tagRuleMatches(rule.stagRule, stags) &&
       tagRuleMatches(rule.vtagRule, vtags)
