@@ -25,3 +25,4 @@ export function buildItemData(def: ItemDef): ItemData {
     return r as ItemData;
   }
 }
+

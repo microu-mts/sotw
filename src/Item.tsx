@@ -1,8 +1,9 @@
 import { Component, createMemo, Show } from "solid-js";
-import { buildItemData, ItemData, ItemDef } from "./itemData.js";
-import { MStyle } from "./mstyle/mstyle.js";
 import { twMerge } from "tailwind-merge";
-import { flattenSplitArg } from "./mstyle/utils.js";
+import { MStyle } from "./mstyle/mstyle.js";
+import { buildItemData, ItemData, ItemDef } from "./itemData.js";
+import { ISVTStyler } from "mstyle/SVTStyler.js";
+import { constants } from "node:http2";
 
 type TProps = {
   def: ItemDef;
@@ -10,9 +11,16 @@ type TProps = {
   selected?: boolean;
   disabled?: boolean;
   variant?: string;
+  styler?: ISVTStyler;
+
   class?:
     | string
-    | { item?: string; selected?: string; disabled: string; disabler: string };
+    | {
+        item?: string;
+        selected?: string;
+        disabled?: string;
+        disabler?: string;
+      };
 };
 
 export const Item: Component<TProps> = (props) => {
@@ -27,38 +35,74 @@ export const Item: Component<TProps> = (props) => {
     if (props.disabled) {
       r.push("item:disabled");
     }
-
-    if (props.variant) {
-      r.push("!" + props.variant);
-    }
-
     return r;
   };
 
+  const currentStyler = () => {
+    if (props.styler) {
+      return props.styler;
+    } else {
+      return MStyle.svtStyler;
+    }
+  };
+
+  const classProp = createMemo(() => {
+    if (props.class == undefined) {
+      return {};
+    } else if (typeof props.class == "string") {
+      return { item: props.class };
+    } else {
+      return props.class;
+    }
+  });
+
   const itemClasses = createMemo(() => {
-    const tags = currentSTags();
+    const stags = currentSTags();
 
-    const mstyleClasses = MStyle.base ? MStyle.base.classes(tags) : undefined;
-    console.log("mstyleClasses:", itemData().id, mstyleClasses);
+    const styler = currentStyler();
 
-    let r = twMerge(mstyleClasses);
+    const rawClasses = [] as (string | undefined)[];
+
+    const stylerClasses = styler
+      ? styler.classes(stags, props.variant)
+      : undefined;
+    rawClasses.push(...(stylerClasses ?? []));
 
     if (props.onClick) {
-      r = twMerge(r, "select-none cursor-pointer");
+      rawClasses.push("select-none cursor-pointer");
     }
 
+    const customClasses = classProp();
+    if (customClasses.item) {
+      rawClasses.push(customClasses.item);
+    }
+    if (props.selected && customClasses.selected) {
+      rawClasses.push(customClasses.selected);
+    }
+    if (props.disabled && customClasses.disabled) {
+      rawClasses.push(customClasses.disabled);
+    }
+
+    rawClasses.push("relative")
+    const r = twMerge(rawClasses);
+    console.log("itemClasses:", rawClasses, r);
     return r;
   });
 
   const disablerClasses = createMemo(() => {
-    if (MStyle.base) {
-      const stags = props.variant
-        ? `item/disabler !${props.variant}`
-        : "item/disabler";
-      return twMerge(MStyle.base.classes(stags));
-    } else {
-      return "";
+    const rawClasses = [] as string[];
+    if (currentStyler()) {
+      rawClasses.push(
+        ...currentStyler()!.classes("item/disabler", props.variant)
+      );
     }
+    if (classProp().disabler) {
+      rawClasses.push(classProp().disabler!);
+    }
+    rawClasses.push("absolute", "inset-0")
+    const r = twMerge(rawClasses);
+    console.log("disablerClasses:", itemData().id, rawClasses, r);
+    return r;
   });
 
   function handleClick() {
@@ -68,7 +112,7 @@ export const Item: Component<TProps> = (props) => {
   }
 
   return (
-    <div onClick={handleClick} class={itemClasses() + " relative"}>
+    <div onClick={handleClick} class={itemClasses()}>
       {itemData().label}
       <Show when={props.disabled}>
         <div
