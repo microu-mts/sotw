@@ -1,7 +1,7 @@
 import { suite, test } from "node:test";
 import assert from "node:assert/strict";
-import { normalizeTagListArgument } from "../../src/mstyle/tagRules.js";
-import { deduplicate, splitCleanString } from "../../src/mstyle/utils.js";
+import { normalizeTagListArgument } from "../../src/stylers/tagRules.js";
+import { deduplicate, splitCleanString } from "../../src/stylers/utils.js";
 
 suite("splitCleanString", () => {
   test("default options", () => {

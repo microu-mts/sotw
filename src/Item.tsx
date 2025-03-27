@@ -1,9 +1,8 @@
 import { Component, createMemo, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
-import { MStyle } from "./mstyle/mstyle.js";
+import { Stylers } from "./stylers/Stylers.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
-import { ISVTStyler } from "mstyle/SVTStyler.js";
-import { constants } from "node:http2";
+import { ISVTStyler } from "./stylers/index.js";
 
 type TProps = {
   def: ItemDef;
@@ -42,7 +41,7 @@ export const Item: Component<TProps> = (props) => {
     if (props.styler) {
       return props.styler;
     } else {
-      return MStyle.svtStyler;
+      return Stylers.base;
     }
   };
 
@@ -93,7 +92,7 @@ export const Item: Component<TProps> = (props) => {
     const rawClasses = [] as string[];
     if (currentStyler()) {
       rawClasses.push(
-        ...currentStyler()!.classes("item/disabler", props.variant)
+        ...currentStyler()!.classes("item/disabler", props.variant)!
       );
     }
     if (classProp().disabler) {

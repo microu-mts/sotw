@@ -1,6 +1,5 @@
-import { randomInt } from "crypto";
-import { TagRule, tagRuleMatches, TagRuleMode } from "./tagRules.js";
-import { normalizeTagListArgument, TagListArgument } from "./tagRules.js";
+import { normalizeTagListArgument, tagRuleMatches } from "./tagRules.js";
+import { ISVTStyler, TagListArgument, TagRule, TagRuleMode } from "./types.js";
 import { deduplicate } from "./utils.js";
 
 export type SVTRule = {
@@ -21,13 +20,7 @@ type SVTStylerOptions = {
   normalizer?: (rawClasses: string[]) => string[];
 };
 
-export interface ISVTStyler {
-  classes(stags: TagListArgument, vtags: TagListArgument): string[];
-
-}
-
-
-export class SVTStyler implements ISVTStyler{
+export class SVTStyler implements ISVTStyler {
   readonly _rules: SVTRule[] = [];
   readonly options: { normalizer?: (rawClasses: string[]) => string[] };
 

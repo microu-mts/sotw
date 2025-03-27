@@ -2,9 +2,10 @@ import { suite, test } from "node:test";
 import assert from "node:assert/strict";
 import {
   normalizeTagListArgument,
-  TagRule,
   tagRuleMatches,
-} from "../../src/mstyle/tagRules.js";
+} from "../../src/stylers/tagRules.js";
+import { TagRule } from "../../src/stylers/types.js";
+
 
 suite("normalizeTagListArgument", () => {
   test("normalizeTagListArgument(undefined)", () => {

@@ -1,7 +1,7 @@
 import { suite, test } from "node:test";
 import assert from "node:assert/strict";
-import { SVTRuleDef, SVTStyler } from "../../src/mstyle/SVTStyler.js";
-import { deduplicate } from "../../src/mstyle/utils.js";
+import { SVTRuleDef, SVTStyler } from "../../src/stylers/index.js";
+import { deduplicate } from "../../src/stylers/utils.js";
 
 function createRandomString(length) {
   const chars =
@@ -123,6 +123,10 @@ suite("SVTStyler.classes", () => {
       "a",
       "b",
     ]);
-    assert.deepEqual(stylerADeduplicate.classes("A B C SA SB", ""), ["a", "b", "c"]);
+    assert.deepEqual(stylerADeduplicate.classes("A B C SA SB", ""), [
+      "a",
+      "b",
+      "c",
+    ]);
   });
 });

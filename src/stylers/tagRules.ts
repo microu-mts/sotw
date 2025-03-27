@@ -1,9 +1,7 @@
+import { TagListArgument, TagRule } from "./types.js";
 import { splitCleanString } from "./utils.js";
 
-export type TagRuleMode = "or" | "and" | "any";
-export type TagRule = { mode: TagRuleMode; tags: string[] };
 
-export type TagListArgument = string | string[] | TagListArgument[] | undefined;
 
 export function normalizeTagListArgument(arg: TagListArgument): string[] {
   if (typeof arg == "string") {
