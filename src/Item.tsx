@@ -4,6 +4,15 @@ import { Stylers } from "./stylers/Stylers.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { ISVTStyler } from "./stylers/index.js";
 
+export type TItemClass =
+  | string
+  | {
+      item?: string;
+      selected?: string;
+      disabled?: string;
+      disabler?: string;
+    };
+
 type TProps = {
   def: ItemDef;
   onClick?: (item: ItemData) => void;
@@ -12,14 +21,7 @@ type TProps = {
   variant?: string;
   styler?: ISVTStyler;
 
-  class?:
-    | string
-    | {
-        item?: string;
-        selected?: string;
-        disabled?: string;
-        disabler?: string;
-      };
+  class?: TItemClass  ;
 };
 
 export const Item: Component<TProps> = (props) => {
@@ -82,9 +84,8 @@ export const Item: Component<TProps> = (props) => {
       rawClasses.push(customClasses.disabled);
     }
 
-    rawClasses.push("relative")
+    rawClasses.push("relative");
     const r = twMerge(rawClasses);
-    console.log("itemClasses:", rawClasses, r);
     return r;
   });
 
@@ -98,9 +99,8 @@ export const Item: Component<TProps> = (props) => {
     if (classProp().disabler) {
       rawClasses.push(classProp().disabler!);
     }
-    rawClasses.push("absolute", "inset-0")
+    rawClasses.push("absolute", "inset-0");
     const r = twMerge(rawClasses);
-    console.log("disablerClasses:", itemData().id, rawClasses, r);
     return r;
   });
 

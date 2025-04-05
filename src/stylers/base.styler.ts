@@ -30,7 +30,7 @@ const base = new SVTStyler([
 
   {
     stags: "B0",
-    classes: "bg-zinc-200",
+    classes: "bg-zinc-100",
   },
   {
     stags: "B1",
@@ -38,7 +38,7 @@ const base = new SVTStyler([
   },
   {
     stags: "B2",
-    classes: "bg-rose-400",
+    classes: "bg-stone-800 text-stone-100",
   },
 ]);
 
