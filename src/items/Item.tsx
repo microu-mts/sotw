@@ -4,24 +4,24 @@ import { Stylers } from "../stylers/Stylers.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { ISVTStyler } from "../stylers/index.js";
 
-export type TItemClass =
-  | string
-  | {
-      item?: string;
-      selected?: string;
-      disabled?: string;
-      disabler?: string;
-    };
+export type TItemClass = {
+  item?: string;
+  selected?: string;
+  disabled?: string;
+  disabler?: string;
+};
+
+export type TItemClassArg = string | TItemClass;
 
 type TProps = {
   def: ItemDef;
   onClick?: (item: ItemData) => void;
   selected?: boolean;
   disabled?: boolean;
-  variant?: string;
+  vtags?: string | string[];
   styler?: ISVTStyler;
 
-  class?: TItemClass;
+  class?: TItemClassArg;
 };
 
 export const Item: Component<TProps> = (props) => {
@@ -47,7 +47,7 @@ export const Item: Component<TProps> = (props) => {
     }
   };
 
-  const classProp = createMemo(() => {
+  const classProp = createMemo<TItemClass>(() => {
     if (props.class == undefined) {
       return {};
     } else if (typeof props.class == "string") {
@@ -65,7 +65,7 @@ export const Item: Component<TProps> = (props) => {
     const rawClasses = [] as (string | undefined)[];
 
     const stylerClasses = styler
-      ? styler.classes(stags, props.variant)
+      ? styler.classes(stags, props.vtags)
       : undefined;
     rawClasses.push(...(stylerClasses ?? []));
 
@@ -93,7 +93,7 @@ export const Item: Component<TProps> = (props) => {
     const rawClasses = [] as string[];
     if (currentStyler()) {
       rawClasses.push(
-        ...currentStyler()!.classes("item/disabler", props.variant)!
+        ...currentStyler()!.classes("item/disabler", props.vtags)!
       );
     }
     if (classProp().disabler) {

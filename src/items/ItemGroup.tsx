@@ -1,13 +1,13 @@
 import { twMerge } from "tailwind-merge";
 import { Block } from "../Block.jsx";
-import { Item, TItemClass } from "./Item.js";
+import { Item, TItemClassArg } from "./Item.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { Component, createMemo, For } from "solid-js";
 
 type TProps = {
   items: ItemDef[];
   callback?: (id: string, item: ItemData) => void;
-  class?: string | { group?: string; item?: TItemClass };
+  class?: string | { group?: string; item?: TItemClassArg };
   selection?: string | { [id: string]: boolean };
 };
 
@@ -16,7 +16,7 @@ export const ItemGroup: Component<TProps> = (props) => {
 
   const classes = createMemo(() => {
     let group = "";
-    let item: TItemClass = "";
+    let item: TItemClassArg = "";
     if (typeof props.class == "string") {
       group = props.class;
     } else if (props.class != undefined) {

@@ -3,10 +3,8 @@ import { ISVTStyler, Stylers } from "./stylers/index.js";
 import { twMerge } from "tailwind-merge";
 
 type TProps = ParentProps & {
-  variant?: string;
+  vtags?: string | string;
   styler?: ISVTStyler;
-  level?: number;
-
   class?: string;
 };
 
@@ -20,8 +18,8 @@ export const Block: Component<TProps> = (props) => {
   };
 
   function blockClasses() {
-    const stags = "block" + ` B${props.level ?? 0}`;
-    const classes = currentStyler()!.classes(stags,"" ) ?? [];
+    const stags = "block";
+    const classes = currentStyler()!.classes(stags, props.vtags) ?? [];
     if (props.class) {
       classes.push(props.class);
     }

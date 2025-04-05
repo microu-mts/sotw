@@ -18,11 +18,13 @@ export type SVTRuleDef = {
 
 type SVTStylerOptions = {
   normalizer?: (rawClasses: string[]) => string[];
+  stagsNormaliser?: (rawTags: string[]) => string[];
+  vtagsNormaliser?: (rawTags: string[]) => string[];
 };
 
 export class SVTStyler implements ISVTStyler {
   readonly _rules: SVTRule[] = [];
-  readonly options: { normalizer?: (rawClasses: string[]) => string[] };
+  readonly options: SVTStylerOptions;
 
   constructor(rules: SVTRuleDef[], options: SVTStylerOptions = {}) {
     for (const r of rules) {
@@ -33,8 +35,16 @@ export class SVTStyler implements ISVTStyler {
 
   classes(stags: TagListArgument, vtags: TagListArgument): string[] {
     const r = [] as string[];
-    const stagsNormalized = normalizeTagListArgument(stags);
-    const vtagsNormalized = normalizeTagListArgument(vtags);
+
+    let stagsNormalized = normalizeTagListArgument(stags);
+    let vtagsNormalized = normalizeTagListArgument(vtags);
+
+    if (this.options.stagsNormaliser) {
+      stagsNormalized = this.options.stagsNormaliser(stagsNormalized);
+    }
+    if (this.options.vtagsNormaliser) {
+      vtagsNormalized = this.options.vtagsNormaliser(vtagsNormalized);
+    }
 
     for (const rule of this._rules) {
       if (this.ruleMatches(rule, stagsNormalized, vtagsNormalized)) {
