@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Block } from "./Block.js";
+import { Block } from "../Block.jsx";
 import { Item, TItemClass } from "./Item.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { Component, createMemo, For } from "solid-js";
@@ -25,7 +25,7 @@ export const ItemGroup: Component<TProps> = (props) => {
       item = props.class.item ?? "";
     }
 
-    return { group, item};
+    return { group, item };
   });
 
   const blockClasses = () => {
@@ -35,15 +35,6 @@ export const ItemGroup: Component<TProps> = (props) => {
   const itemClasses = () => {
     return classes().item;
   };
-
-  // const itemSelectedClasses = () => {
-  //   const iclasses = classes().item 
-  //   if (typeof  iclasses == "string") {
-  //     return ""
-  //   } else {
-  //     return iclasses.selected ?? ""
-  //   }
-  // };
 
   const callCallback = (item: ItemData) => {
     if (props.callback) {

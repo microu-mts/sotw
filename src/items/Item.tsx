@@ -1,8 +1,8 @@
 import { Component, createMemo, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
-import { Stylers } from "./stylers/Stylers.js";
+import { Stylers } from "../stylers/Stylers.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
-import { ISVTStyler } from "./stylers/index.js";
+import { ISVTStyler } from "../stylers/index.js";
 
 export type TItemClass =
   | string
@@ -21,7 +21,7 @@ type TProps = {
   variant?: string;
   styler?: ISVTStyler;
 
-  class?: TItemClass  ;
+  class?: TItemClass;
 };
 
 export const Item: Component<TProps> = (props) => {
