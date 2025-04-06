@@ -5,27 +5,15 @@ import {
 } from "./stylersUtils.js";
 import { SVTStyler } from "./SVTStyler.js";
 
-const base = new SVTStyler(
+export const baseStyler = new SVTStyler(
   [
     {
-      stags: "block",
-      classes: "bg-white",
-    },
-    {
-      stags: "item",
-      classes: "py-0.5 px-1 text-base",
-    },
-    {
-      stags: "item",
-      classes: "bg-slate-800 text-slate-100",
-    },
-    {
       vtags: "A",
-      classes: "bg-slate-800 text-slate-100",
+      classes: "bg-slate-100 text-slate-800",
     },
     {
       vtags: "B",
-      classes: "bg-slate-100 text-slate-800",
+      classes: "bg-slate-800 text-slate-100",
     },
     {
       vtags: "C",
@@ -36,21 +24,32 @@ const base = new SVTStyler(
       classes: "bg-orange-900 text-stone-100",
     },
     {
-      stags: "item",
       vtags: "LG",
-      classes: "text-xl py-1 px-2 ",
+      classes: "text-xl p-2",
     },
     {
-      stags: "item",
       vtags: "BASE",
-      classes: "text-base py-0.5 px-1 ",
+      classes: "text-base p-1",
     },
     {
-      stags: "item",
       vtags: "SM",
       classes: "text-sm p-0.5",
     },
-
+    {
+      vtags: "LG",
+      stags: "item",
+      classes: "text-xl px-2 py-1",
+    },
+    {
+      vtags: "BASE",
+      stags: "item",
+      classes: "text-base px-1 py-0.5",
+    },
+    {
+      vtags: "SM",
+      stags: "item",
+      classes: "text-sm p-0.5",
+    },
     {
       stags: "item:selected",
       classes: "underline font-bold",
@@ -75,4 +74,3 @@ const base = new SVTStyler(
   }
 );
 
-export default base;

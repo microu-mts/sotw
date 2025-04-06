@@ -8,5 +8,3 @@ export interface ISVTStyler {
   classes(stags: TagListArgument, vtags: TagListArgument): string[]| undefined;
 }
 
-
-

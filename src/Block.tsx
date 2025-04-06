@@ -1,9 +1,9 @@
 import { Component, ParentProps } from "solid-js";
-import { ISVTStyler, Stylers } from "./stylers/index.js";
+import { ISVTStyler, Stylers, TagListArgument } from "./stylers/index.js";
 import { twMerge } from "tailwind-merge";
 
 type TProps = ParentProps & {
-  vtags?: string | string;
+  vtags?: TagListArgument;
   styler?: ISVTStyler;
   class?: string;
 };

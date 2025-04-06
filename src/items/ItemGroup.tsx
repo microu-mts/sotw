@@ -3,16 +3,32 @@ import { Block } from "../Block.jsx";
 import { Item, TItemClassArg } from "./Item.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
 import { Component, createMemo, For } from "solid-js";
+import { TagListArgument } from "../stylers/types.js";
+import { normalizeTagListArgument } from "../stylers/tagRules.js";
 
 type TProps = {
   items: ItemDef[];
   callback?: (id: string, item: ItemData) => void;
   class?: string | { group?: string; item?: TItemClassArg };
   selection?: string | { [id: string]: boolean };
+  vtags?: TagListArgument | { group?: TagListArgument; item?: TagListArgument };
 };
 
 export const ItemGroup: Component<TProps> = (props) => {
   const items = () => props.items.map(buildItemData);
+
+  const currentVTags = createMemo<{ group: string[]; item?: string[] }>(() => {
+    const item = [] as string[];
+    const group = [] as string[];
+    const _vtags = props.vtags;
+    if (Array.isArray(_vtags) || typeof _vtags == "string") {
+      group.push(...normalizeTagListArgument(_vtags));
+    } else if (typeof _vtags == "object") {
+      group.push(...normalizeTagListArgument(_vtags.group));
+      item.push(...normalizeTagListArgument(_vtags.item));
+    }
+    return { group, item };
+  });
 
   const classes = createMemo(() => {
     let group = "";
@@ -52,7 +68,7 @@ export const ItemGroup: Component<TProps> = (props) => {
   };
 
   return (
-    <Block class={blockClasses()}>
+    <Block class={blockClasses()} vtags={currentVTags().group}>
       <For each={items()}>
         {(item) => {
           return (
@@ -61,6 +77,7 @@ export const ItemGroup: Component<TProps> = (props) => {
               selected={itemSelected(item.id)}
               onClick={() => callCallback(item)}
               class={itemClasses()}
+              vtags={currentVTags().item}
             ></Item>
           );
         }}

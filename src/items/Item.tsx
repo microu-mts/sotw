@@ -2,7 +2,7 @@ import { Component, createMemo, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
 import { Stylers } from "../stylers/Stylers.js";
 import { buildItemData, ItemData, ItemDef } from "./itemData.js";
-import { ISVTStyler } from "../stylers/index.js";
+import { ISVTStyler, TagListArgument } from "../stylers/index.js";
 
 export type TItemClass = {
   item?: string;
@@ -18,7 +18,7 @@ type TProps = {
   onClick?: (item: ItemData) => void;
   selected?: boolean;
   disabled?: boolean;
-  vtags?: string | string[];
+  vtags?: TagListArgument;
   styler?: ISVTStyler;
 
   class?: TItemClassArg;

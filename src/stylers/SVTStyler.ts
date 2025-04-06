@@ -28,9 +28,19 @@ export class SVTStyler implements ISVTStyler {
 
   constructor(rules: SVTRuleDef[], options: SVTStylerOptions = {}) {
     for (const r of rules) {
-      this._rules.push(this.normalizeRule(r));
+      this._rules.push(SVTStyler.normalizeRule(r));
     }
     this.options = { ...options };
+  }
+
+  withAddedRules(rules: SVTRuleDef[]): SVTStyler {
+    const addedRules: SVTRule[] = [];
+    for (const r of rules) {
+      addedRules.push(SVTStyler.normalizeRule(r));
+    }
+    const styler = new SVTStyler([], this.options);
+    styler._rules.push(...this._rules, ...addedRules);
+    return styler;
   }
 
   classes(stags: TagListArgument, vtags: TagListArgument): string[] {
@@ -55,7 +65,7 @@ export class SVTStyler implements ISVTStyler {
     return this.options.normalizer ? this.options.normalizer(r) : r;
   }
 
-  normalizeRule(rule: SVTRuleDef): SVTRule {
+  static normalizeRule(rule: SVTRuleDef): SVTRule {
     let stagMode: TagRuleMode = rule.stagMode ?? "or";
     let vtagMode: TagRuleMode = rule.vtagMode ?? "or";
     let stags: string[] = deduplicate(normalizeTagListArgument(rule.stags));

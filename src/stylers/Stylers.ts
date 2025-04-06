@@ -1,9 +1,10 @@
 import { ISVTStyler } from "./types";
-import baseStyler from "./base.styler.js";
+import {baseStyler} from "./base.styler.js";
 
 export class Stylers {
   private static _base: ISVTStyler | undefined;
   private static _stylersMap = new Map<string, ISVTStyler>();
+
   static get base(): ISVTStyler | undefined {
     return this._base;
   }
