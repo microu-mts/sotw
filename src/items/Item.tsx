@@ -13,18 +13,18 @@ export type TItemClass = {
 
 export type TItemClassArg = string | TItemClass;
 
-type TProps = {
+export type TItemProps = {
   def: ItemDef;
   onClick?: (item: ItemData) => void;
   selected?: boolean;
   disabled?: boolean;
   vtags?: TagListArgument;
   styler?: ISVTStyler;
-
   class?: TItemClassArg;
+  clickableWhendisabled?: boolean;
 };
 
-export const Item: Component<TProps> = (props) => {
+export const Item: Component<TItemProps> = (props) => {
   const itemData = () => buildItemData(props.def);
 
   const currentSTags = () => {
@@ -99,7 +99,7 @@ export const Item: Component<TProps> = (props) => {
     if (classProp().disabler) {
       rawClasses.push(classProp().disabler!);
     }
-    rawClasses.push("absolute", "inset-0");
+    rawClasses.push("absolute inset-0");
     const r = twMerge(rawClasses);
     return r;
   });
@@ -117,7 +117,9 @@ export const Item: Component<TProps> = (props) => {
         <div
           class={disablerClasses()}
           onClick={(e) => {
-            e.stopPropagation();
+            if (!props.clickableWhendisabled) {
+              e.stopPropagation();
+            }
           }}
         ></div>
       </Show>

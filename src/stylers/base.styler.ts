@@ -5,6 +5,8 @@ import {
 } from "./stylersUtils.js";
 import { SVTStyler } from "./SVTStyler.js";
 
+const _tailwind_classes_used = "absolute relative inset-0";
+
 export const baseStyler = new SVTStyler(
   [
     {
@@ -73,4 +75,3 @@ export const baseStyler = new SVTStyler(
       ),
   }
 );
-
