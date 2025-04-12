@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { Block } from "../Block.jsx";
 import { Item, TItemClassArg } from "./Item.js";
-import { buildItemData, IdLabel, IdLabelArg } from "./itemData.js";
+import { buildIdLabel, IdLabel, IdLabelArg } from "./IdLabel.js";
 import { Component, createMemo, For } from "solid-js";
 import { TagListArgument } from "../stylers/types.js";
 import { normalizeTagListArgument } from "../stylers/tagRules.js";
@@ -15,7 +15,7 @@ type TProps = {
 };
 
 export const ItemGroup: Component<TProps> = (props) => {
-  const items = () => props.items.map(buildItemData);
+  const items = () => props.items.map(buildIdLabel);
 
   const currentVTags = createMemo<{ group: string[]; item?: string[] }>(() => {
     const item = [] as string[];

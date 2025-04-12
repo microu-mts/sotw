@@ -1,4 +1,4 @@
-import { buildItemData, IdLabel, IdLabelArg, IdLabelDef } from "./items/itemData.js";
+import { buildIdLabel, IdLabel, IdLabelArg, IdLabelDef } from "./items/IdLabel.js";
 import { Component, createMemo, For, JSX } from "solid-js";
 
 import { twMerge } from "tailwind-merge";
@@ -23,7 +23,7 @@ export function ButtonBar(props: TProps): JSX.Element {
     const r = [];
 
     for (const item of props.items) {
-      r.push(buildItemData(item));
+      r.push(buildIdLabel(item));
     }
     return r;
   };

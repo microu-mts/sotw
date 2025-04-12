@@ -1,4 +1,4 @@
-export * from "./items/itemData.js";
+export * from "./items/IdLabel.js";
 export * from "./ButtonBar.js";
 export * from "./items/Item.jsx";
 export * from "./Block.js";

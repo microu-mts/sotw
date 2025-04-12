@@ -1,7 +1,7 @@
 import { Component, createMemo, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
 import { Stylers } from "../stylers/Stylers.js";
-import { buildItemData, IdLabel, IdLabelArg } from "./itemData.js";
+import { buildIdLabel, IdLabel, IdLabelArg } from "./IdLabel.js";
 import { ISVTStyler, TagListArgument } from "../stylers/index.js";
 
 export type TItemClass = {
@@ -25,7 +25,7 @@ export type TItemProps = {
 };
 
 export const Item: Component<TItemProps> = (props) => {
-  const itemData = () => buildItemData(props.def);
+  const itemData = () => buildIdLabel(props.def);
 
   const currentSTags = () => {
     const r = [] as string[];
