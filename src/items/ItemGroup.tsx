@@ -8,7 +8,7 @@ import { normalizeTagListArgument } from "../stylers/tagRules.js";
 
 type TProps = {
   items: IdLabelArg[];
-  callback?: (id: string, item: IdLabel) => void;
+  callback?: (item: IdLabel) => void;
   class?: string | { group?: string; item?: TItemClassArg };
   selection?: string | { [id: string]: boolean };
   vtags?: TagListArgument | { group?: TagListArgument; item?: TagListArgument };
@@ -54,7 +54,7 @@ export const ItemGroup: Component<TProps> = (props) => {
 
   const callCallback = (item: IdLabel) => {
     if (props.callback) {
-      props.callback(item.id, item);
+      props.callback( item);
     }
   };
 
@@ -73,9 +73,9 @@ export const ItemGroup: Component<TProps> = (props) => {
         {(item) => {
           return (
             <Item
-              def={item}
+              idLabel={item}
               selected={itemSelected(item.id)}
-              onClick={() => callCallback(item)}
+              callback={() => callCallback(item)}
               class={itemClasses()}
               vtags={currentVTags().item}
             ></Item>

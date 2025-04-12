@@ -10,22 +10,21 @@ export type TItemClass = {
   disabled?: string;
   disabler?: string;
 };
-
-export type TItemClassArg = string | TItemClass;
+export type TItemClassArg = TItemClass|string;
 
 export type TItemProps = {
-  def: IdLabelArg;
-  onClick?: (item: IdLabel) => void;
+  idLabel: IdLabelArg;
+  callback?: (item: IdLabel) => void;
   selected?: boolean;
   disabled?: boolean;
-  vtags?: TagListArgument;
-  styler?: ISVTStyler;
-  class?: TItemClassArg;
   clickableWhendisabled?: boolean;
+  styler?: ISVTStyler;
+  vtags?: TagListArgument;
+  class?: TItemClassArg;
 };
 
 export const Item: Component<TItemProps> = (props) => {
-  const itemData = () => buildIdLabel(props.def);
+  const itemData = () => buildIdLabel(props.idLabel);
 
   const currentSTags = () => {
     const r = [] as string[];
@@ -69,7 +68,7 @@ export const Item: Component<TItemProps> = (props) => {
       : undefined;
     rawClasses.push(...(stylerClasses ?? []));
 
-    if (props.onClick) {
+    if (props.callback) {
       rawClasses.push("select-none cursor-pointer");
     }
 
@@ -105,8 +104,8 @@ export const Item: Component<TItemProps> = (props) => {
   });
 
   function handleClick() {
-    if (props.onClick != undefined) {
-      props.onClick(itemData());
+    if (props.callback != undefined) {
+      props.callback(itemData());
     }
   }
 
