@@ -1,18 +1,18 @@
-export interface ItemData {
+export interface IdLabel {
   id: string;
   label: string;
   [x: string | symbol]: unknown;
 }
 
-export type ItemDefData = {
+export type IdLabelDef = {
   id: string;
   label?: string;
   [x: string | symbol]: unknown;
 };
 
-export type ItemDef = ItemDefData | [string, string] | string;
+export type IdLabelArg = IdLabelDef | [string, string] | string;
 
-export function buildItemData(def: ItemDef): ItemData {
+export function buildItemData(def: IdLabelArg): IdLabel {
   if (typeof def == "string") {
     return { id: def, label: def };
   } else if (Array.isArray(def)) {
@@ -22,7 +22,7 @@ export function buildItemData(def: ItemDef): ItemData {
     if (r.label == undefined) {
       r["label"] = r.id;
     }
-    return r as ItemData;
+    return r as IdLabel;
   }
 }
 

@@ -1,11 +1,11 @@
-import { buildItemData, ItemData, ItemDef, ItemDefData } from "./items/itemData.js";
+import { buildItemData, IdLabel, IdLabelArg, IdLabelDef } from "./items/itemData.js";
 import { Component, createMemo, For, JSX } from "solid-js";
 
 import { twMerge } from "tailwind-merge";
 
 type TProps = {
-  items: ItemDef[];
-  callback?: (id: string, item: ItemData) => void;
+  items: IdLabelArg[];
+  callback?: (id: string, item: IdLabel) => void;
   class?: string | { ul?: string; li?: string; selected?: string };
   selection?: string;
 };
@@ -28,7 +28,7 @@ export function ButtonBar(props: TProps): JSX.Element {
     return r;
   };
 
-  const callCallback = (item: ItemData) => {
+  const callCallback = (item: IdLabel) => {
     if (props.callback) {
       props.callback(item.id, item);
     }

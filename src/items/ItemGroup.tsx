@@ -1,14 +1,14 @@
 import { twMerge } from "tailwind-merge";
 import { Block } from "../Block.jsx";
 import { Item, TItemClassArg } from "./Item.js";
-import { buildItemData, ItemData, ItemDef } from "./itemData.js";
+import { buildItemData, IdLabel, IdLabelArg } from "./itemData.js";
 import { Component, createMemo, For } from "solid-js";
 import { TagListArgument } from "../stylers/types.js";
 import { normalizeTagListArgument } from "../stylers/tagRules.js";
 
 type TProps = {
-  items: ItemDef[];
-  callback?: (id: string, item: ItemData) => void;
+  items: IdLabelArg[];
+  callback?: (id: string, item: IdLabel) => void;
   class?: string | { group?: string; item?: TItemClassArg };
   selection?: string | { [id: string]: boolean };
   vtags?: TagListArgument | { group?: TagListArgument; item?: TagListArgument };
@@ -52,7 +52,7 @@ export const ItemGroup: Component<TProps> = (props) => {
     return classes().item;
   };
 
-  const callCallback = (item: ItemData) => {
+  const callCallback = (item: IdLabel) => {
     if (props.callback) {
       props.callback(item.id, item);
     }
