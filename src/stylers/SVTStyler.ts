@@ -33,12 +33,13 @@ export class SVTStyler implements ISVTStyler {
     this.options = { ...options };
   }
 
-  withAddedRules(rules: SVTRuleDef[]): SVTStyler {
+  with(rules: SVTRuleDef[], options: SVTStylerOptions = {}): SVTStyler {
     const addedRules: SVTRule[] = [];
     for (const r of rules) {
       addedRules.push(SVTStyler.normalizeRule(r));
     }
-    const styler = new SVTStyler([], this.options);
+
+    const styler = new SVTStyler([], { ...this.options });
     styler._rules.push(...this._rules, ...addedRules);
     return styler;
   }
