@@ -1,8 +1,8 @@
-import { Component, createMemo, Show } from "solid-js";
+import { type Component, createMemo, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
+import { type ISVTStyler, type TagListArgument } from "../stylers/index.js";
 import { Stylers } from "../stylers/Stylers.js";
-import { buildIdLabel, IdLabel, IdLabelArg } from "./IdLabel.js";
-import { ISVTStyler, TagListArgument } from "../stylers/index.js";
+import { buildIdLabel, type IdLabel, type IdLabelArg } from "./IdLabel.js";
 
 export type TItemClass = {
   item?: string;

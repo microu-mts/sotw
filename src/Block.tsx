@@ -1,6 +1,6 @@
-import { Component, ParentProps } from "solid-js";
+import type { Component, ParentProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import { ISVTStyler, Stylers, TagListArgument } from "./stylers/index.js";
+import { type ISVTStyler, Stylers, type TagListArgument } from "./stylers/index.js";
 import { twMerge } from "tailwind-merge";
 
 type TProps = ParentProps & {

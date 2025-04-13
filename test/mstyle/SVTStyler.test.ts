@@ -17,14 +17,14 @@ suite("SVTStyler.ruleMatches", () => {
   const styler = new SVTStyler([]);
 
   test("stag rules", () => {
-    const orRule = styler.normalizeRule({ stags: ["A", "B"] });
+    const orRule = SVTStyler.normalizeRule({ stags: ["A", "B"] });
     assert(styler.ruleMatches(orRule, ["A"], []));
     assert(styler.ruleMatches(orRule, ["B"], ["alpha", "beta"]));
     assert(styler.ruleMatches(orRule, ["A", "C"], ["alpha", "beta"]));
     assert(styler.ruleMatches(orRule, ["B", "Z", "A"], ["alpha", "beta"]));
     assert(!styler.ruleMatches(orRule, ["C"], ["alpha", "beta"]));
 
-    const andRule = styler.normalizeRule({
+    const andRule = SVTStyler.normalizeRule({
       stagMode: "and",
       stags: ["A", "B"],
     });
@@ -36,14 +36,14 @@ suite("SVTStyler.ruleMatches", () => {
   });
 
   test("vtag rules", () => {
-    const orRule = styler.normalizeRule({ vtags: ["alpha", "beta"] });
+    const orRule = SVTStyler.normalizeRule({ vtags: ["alpha", "beta"] });
     assert(styler.ruleMatches(orRule, [], ["alpha"]));
     assert(styler.ruleMatches(orRule, ["A"], ["alpha"]));
     assert(styler.ruleMatches(orRule, ["A", "C"], ["alpha", "gamma", "beta"]));
     assert(styler.ruleMatches(orRule, ["B", "Z", "A"], ["beta", "gamma"]));
     assert(!styler.ruleMatches(orRule, ["C"], ["delta", "omega"]));
 
-    const andRule = styler.normalizeRule({
+    const andRule = SVTStyler.normalizeRule({
       vtagMode: "and",
       vtags: ["alpha", "beta"],
     });
@@ -55,7 +55,7 @@ suite("SVTStyler.ruleMatches", () => {
   });
 
   test("stag+vtag rules", () => {
-    const orRule = styler.normalizeRule({
+    const orRule = SVTStyler.normalizeRule({
       stags: ["A", "B"],
       vtags: ["alpha", "beta"],
     });
@@ -65,7 +65,7 @@ suite("SVTStyler.ruleMatches", () => {
     assert(!styler.ruleMatches(orRule, ["Z"], ["gamma", "omega"]));
     assert(!styler.ruleMatches(orRule, ["C"], ["delta", "omega"]));
 
-    const andRule = styler.normalizeRule({
+    const andRule = SVTStyler.normalizeRule({
       stagMode: "and",
       stags: ["A", "B"],
       vtagMode: "and",
@@ -81,7 +81,7 @@ suite("SVTStyler.ruleMatches", () => {
   });
 
   test("any rules", () => {
-    const anyRule = styler.normalizeRule({});
+    const anyRule = SVTStyler.normalizeRule({});
     console.log("ANYRULE:", anyRule);
     assert(styler.ruleMatches(anyRule, [], []));
 

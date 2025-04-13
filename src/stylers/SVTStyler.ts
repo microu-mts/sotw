@@ -1,5 +1,10 @@
 import { normalizeTagListArgument, tagRuleMatches } from "./tagRules.js";
-import { ISVTStyler, TagListArgument, TagRule, TagRuleMode } from "./types.js";
+import type {
+  ISVTStyler,
+  TagListArgument,
+  TagRule,
+  TagRuleMode,
+} from "./types.js";
 import { deduplicate } from "./utils.js";
 
 export type SVTRule = {

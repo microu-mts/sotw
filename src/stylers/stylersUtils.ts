@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { ISVTStyler, TagListArgument } from "./types.js";
+import type { ISVTStyler, TagListArgument } from "./types.js";
 import { splitCleanString } from "./utils.js";
 
 export class SVTStylerNormalizer implements ISVTStyler {

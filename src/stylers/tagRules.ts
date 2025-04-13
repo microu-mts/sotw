@@ -1,4 +1,4 @@
-import { TagListArgument, TagRule } from "./types.js";
+import type { TagListArgument, TagRule } from "./types.js";
 import { splitCleanString } from "./utils.js";
 
 
