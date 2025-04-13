@@ -1,6 +1,26 @@
 import { twMerge } from "tailwind-merge";
 import { Block } from "../Block.jsx";
-import { Item, type TItemClassArg } from "./Item.js";...
+import { Item, type TItemClassArg } from "./Item.js";
+import { buildIdLabel, type IdLabel, type IdLabelArg } from "./IdLabel.js";
+import { type Component, createMemo, For } from "solid-js";
+import { type TagListArgument } from "../stylers/types.js";
+import { normalizeTagListArgument } from "../stylers/tagRules.js";
+
+type TProps = {
+  items: IdLabelArg[];
+  callback?: (item: IdLabel) => void;
+  class?: string | { group?: string; item?: TItemClassArg };
+  selection?: string | { [id: string]: boolean };
+  vtags?: TagListArgument | { group?: TagListArgument; item?: TagListArgument };
+};
+
+export const ItemGroup: Component<TProps> = (props) => {
+  const items = () => props.items.map(buildIdLabel);
+
+  const currentVTags = createMemo<{ group: string[]; item?: string[] }>(() => {
+    const item = [] as string[];
+    const group = [] as string[];
+    const _vtags = props.vtags;
     if (Array.isArray(_vtags) || typeof _vtags == "string") {
       group.push(...normalizeTagListArgument(_vtags));
     } else if (typeof _vtags == "object") {
