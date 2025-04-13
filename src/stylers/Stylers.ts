@@ -1,4 +1,4 @@
-import { ISVTStyler } from "./types";
+import type { ISVTStyler } from "./types.js";
 import {baseStyler} from "./base.styler.js";
 
 export class Stylers {
