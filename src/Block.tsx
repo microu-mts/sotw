@@ -1,4 +1,5 @@
 import { Component, ParentProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import { ISVTStyler, Stylers, TagListArgument } from "./stylers/index.js";
 import { twMerge } from "tailwind-merge";
 
@@ -6,9 +7,11 @@ type TProps = ParentProps & {
   vtags?: TagListArgument;
   styler?: ISVTStyler;
   class?: string;
+  element?: string;
 };
 
 export const Block: Component<TProps> = (props) => {
+  const elementTag = () => props.element ?? "div";
   const currentStyler = () => {
     if (props.styler) {
       return props.styler;
@@ -26,5 +29,9 @@ export const Block: Component<TProps> = (props) => {
     return twMerge(classes);
   }
 
-  return <div class={blockClasses()}>{props.children}</div>;
+  return (
+    <Dynamic component={elementTag()} class={blockClasses()}>
+      {props.children}
+    </Dynamic>
+  );
 };
